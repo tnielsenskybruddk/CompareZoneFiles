@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Management.Automation;
 
 namespace CompareZoneFiles
@@ -8,11 +9,11 @@ namespace CompareZoneFiles
     {
         static void Main(string[] args)
         {
-            var host = "";
-            var ns1 = "";
-            var ns2 = "";
-            var aPath = @"";
-            var cnamePath = @"";
+            var host = ConfigurationManager.AppSettings["Host"];
+            var ns1 = ConfigurationManager.AppSettings["Ns1"];
+            var ns2 = ConfigurationManager.AppSettings["N2"];
+            var aPath = ConfigurationManager.AppSettings["APath"];
+            var cnamePath = ConfigurationManager.AppSettings["CnamePath"];
 
             var aLines = System.IO.File.ReadAllLines(aPath);
             foreach (var line in aLines)
