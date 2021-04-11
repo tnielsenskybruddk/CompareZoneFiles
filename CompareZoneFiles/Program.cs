@@ -11,7 +11,7 @@ namespace CompareZoneFiles
         {
             var host = ConfigurationManager.AppSettings["Host"];
             var ns1 = ConfigurationManager.AppSettings["Ns1"];
-            var ns2 = ConfigurationManager.AppSettings["N2"];
+            var ns2 = ConfigurationManager.AppSettings["Ns2"];
             var aPath = ConfigurationManager.AppSettings["APath"];
             var cnamePath = ConfigurationManager.AppSettings["CnamePath"];
 
