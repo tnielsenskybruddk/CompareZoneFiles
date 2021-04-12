@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Management.Automation;
@@ -14,6 +15,7 @@ namespace CompareZoneFiles
             var ns2 = ConfigurationManager.AppSettings["Ns2"];
             var aPath = ConfigurationManager.AppSettings["APath"];
             var cnamePath = ConfigurationManager.AppSettings["CnamePath"];
+            var txtPath = ConfigurationManager.AppSettings["TxtPath"];
 
             var aLines = System.IO.File.ReadAllLines(aPath);
             foreach (var line in aLines)
@@ -43,6 +45,28 @@ namespace CompareZoneFiles
                 }
             }
 
+            var txtLines = System.IO.File.ReadAllLines(txtPath);
+            foreach (var line in txtLines)
+            {
+                if (line.Contains("\t"))
+                {
+                    var domain = line.Split('\t')[0] == "@" ? host : line.Split('\t')[0] + "." + host;
+                    Console.Title = "TXT " + domain;
+                    if (GetRequest(ns1, "txt", domain, "Strings").ToString() != GetRequest(ns2, "txt", domain, "Strings").ToString())
+                    {
+                        Console.WriteLine(domain);
+                    }
+                    foreach (var txt in JArray.FromObject(GetRequest(ns1, "txt", domain, "Strings")))
+                    {
+                        Console.WriteLine(txt);
+                    }
+                    foreach (var txt in JArray.FromObject(GetRequest(ns2, "txt", domain, "Strings")))
+                    {
+                        Console.WriteLine(txt);
+                    }
+                }
+            }
+
             Console.Read();
         }
 
@@ -63,6 +87,7 @@ namespace CompareZoneFiles
                             {
                                 value = property.Value;
                             }
+                            //Console.WriteLine(property.Name + ":" + property.Value);
                         }
                     }
                     break;
